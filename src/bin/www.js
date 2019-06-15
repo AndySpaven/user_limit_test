@@ -1,12 +1,11 @@
-#!/usr/bin/env node
-
 /**
  * Module dependencies.
  */
+import http from 'http';
+import dbg from 'debug';
+import app from '../app';
 
-var app = require('../app');
-var debug = require('debug')('user-limit:server');
-var http = require('http');
+const debug = dbg('user-limit-express:server');
 
 /**
  * Get port from environment and store in Express.
