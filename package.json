@@ -10,7 +10,8 @@
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "eslint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -25,7 +26,10 @@
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
   },
   "babel": {
     "presets": [
@@ -39,5 +43,14 @@
       "public/*"
     ],
     "ext": "js, html, css, json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "airbnb-base"
+    ],
+    "rules": {
+      "import/newline-after-import": "error"
+    }
   }
 }
