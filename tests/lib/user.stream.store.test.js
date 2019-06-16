@@ -42,6 +42,13 @@ describe('User Stream Store', () => {
       addStreamToUser({ name: 'alice', id: '234' });
       findUser('alice').should.eql(['123', '234']);
     });
+    it('should create a second item for a user record if the user adds a stream a second time', () => {
+      purge();
+      addStreamToUser({ name: 'alice', id: '123' });
+      addStreamToUser({ name: 'alice', id: '123' });
+      findUser('alice').should.eql(['123', '123']);
+      userShouldNotExist('bob');
+    });
   });
 
   describe('removeStreamFromUser', () => {
@@ -64,7 +71,13 @@ describe('User Stream Store', () => {
       addStreamToUser({ name: 'bob', id: '123' });
       removeStreamFromUser({ name: 'alice', id: '123' });
       userShouldNotExist('alice');
-      userShouldExist('bob');
+    });
+    it('should remove only one item if that id is being streamed twice or more', () => {
+      purge();
+      addStreamToUser({ name: 'alice', id: '123' });
+      addStreamToUser({ name: 'alice', id: '123' });
+      removeStreamFromUser({ name: 'alice', id: '123' });
+      findUser('alice').should.eql(['123']);
     });
   });
 });

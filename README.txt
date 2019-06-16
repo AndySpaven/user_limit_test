@@ -16,6 +16,9 @@ Design Notes
   d) No load balancers to utilise multiple node instances (this would definitely require a DB)
   e) No ELK stack or similar to aggregate logs and monitoring through graphana etc.
 6. No swagger to supply automated documentation of endpoints.
+7. We would not normally use user name as a key in a database - we'd have a user id from the authentication/authorisation module with which to uniquely identify the user.
+8. The calls to user streaming endpoints would validate the user and the stream ids before proceeding and return failure otherwise.
+
 
 Running the App
 ===============
