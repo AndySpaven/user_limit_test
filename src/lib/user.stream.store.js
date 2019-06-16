@@ -31,11 +31,9 @@ export const removeStreamFromUser = ({ name, id }) => {
     if (existing.length === 1) {
       delete db[name];
     } else {
-      console.log(`before: ${existing}`);
       const idx = existing.findIndex(i => i === id);
       existing.splice(idx, 1);
       db[name] = existing;
-      console.log(`after: ${db[name]}`);
     }
   }
 };
