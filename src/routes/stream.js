@@ -12,7 +12,8 @@ const handleStartStreamRequest = (req, res) => {
   }
 };
 
-const handleStopStreamRequest = ({ name, id }, res) => {
+const handleStopStreamRequest = (req, res) => {
+  const { name, id } = req.params;
   stopStreaming({ name, id });
   res.status(204).send();
 };
