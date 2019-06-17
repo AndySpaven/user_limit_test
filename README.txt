@@ -10,14 +10,16 @@ Design Notes
 3. User is provided as a part of the URL path params rather more likely as a header containing a JWT from (2) above.
 4. Persistence would normally be via a database (SQL or NoSQL - the simplicity of the data makes either suitable).  I have chosen instead to use the simplest of in memory structures.
 5. Productionisation hasn't been performed so there is
-  a) No docker or other container files to start a suitable cluster of microservices (separated database and app for example)
+  a) No docker or other container files to start a suitable cluster of microservices (separated database and app for example).
   b) No transactionality on the counting of streams currently assigned to a user.
-  c) No reverse proxies to provide HTTPS offloaded from Express server
-  d) No load balancers to utilise multiple node instances (this would definitely require a DB)
+  c) No reverse proxies to provide HTTPS offloaded from Express server.
+  d) No load balancers to utilise multiple node instances (this would definitely require a DB).
   e) No ELK stack or similar to aggregate logs and monitoring through graphana etc.
 6. No swagger to supply automated documentation of endpoints.
-7. We would not normally use user name as a key in a database - we'd have a user id from the authentication/authorisation module with which to uniquely identify the user.
+7. Should not normally use user name as a key in a database - we'd have a user id from the authentication/authorisation module with which to uniquely identify the user.
 8. The calls to user streaming endpoints would validate the user and the stream ids before proceeding and return failure otherwise.
+9. There is no DI being used (regarding db and service use).
+10. There is no mocking in the tests.  Whilst okay for the route tests this is not ideal for the service test for example.
 
 
 Running the App
@@ -28,7 +30,7 @@ Assuptions
 You have
 1. Node 10.16 or higher installed.
 2. npm 6.4.1 or higher installed.
-2. Familiarity with git, your OS and npm.
+2. Familiarity with git, your OS, npm and curl.
 
 
 Actions
@@ -42,7 +44,15 @@ Actions
 
 visit localhost:3000 in a browser to see the home page to know the server is running.
 
+4. In another terminal :-
+  Use a mix of the following curl commands to request starting and stopping streams.
+  (The user name alice and the stream id can be changed as desired).
 
+  Start: -
+    curl "localhost:3000/user/alice/stream/123"
+
+  Stop: -
+    curl -X "DELETE" "localhost:3000/user/alice/stream/123"
 
 
 Side-Notes
