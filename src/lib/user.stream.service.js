@@ -12,11 +12,11 @@ const hasMaxStreamsOpen = (name) => {
 export const canOpenMoreStreams = name => !hasMaxStreamsOpen(name);
 
 export const startStreaming = ({ name, id }) => {
-  if (hasMaxStreamsOpen(name)) {
-    return false;
+  if (canOpenMoreStreams(name)) {
+    addStreamToUser({ name, id });
+    return true;
   }
-  addStreamToUser({ name, id });
-  return true;
+  return false;
 };
 
 export const stopStreaming = ({ name, id }) => {
