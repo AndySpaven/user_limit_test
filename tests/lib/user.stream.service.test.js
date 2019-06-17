@@ -1,3 +1,4 @@
+/* eslint no-unused-expressions: 0 */
 import chai from 'chai';
 import { beforeEach, describe, it } from 'mocha';
 import {
