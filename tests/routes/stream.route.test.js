@@ -8,7 +8,7 @@ chai.should();
 
 describe('Stream', () => {
   describe('GET /user/:name/steam/:id', () => {
-    it('Should accept calls with name and id', () => {
+    it('Should accept calls with name and id', (done) => {
       chai.request(app)
         .get('/user/alice/stream/123')
         .end((err, res) => {
@@ -18,6 +18,17 @@ describe('Stream', () => {
           user.should.equal('alice');
           stream.should.equal('123');
           running.should.equal(true);
+          done();
+        });
+    });
+  });
+  describe('DELETE /user/:name/steam/:id', () => {
+    it('Should accept calls with name and id', (done) => {
+      chai.request(app)
+        .delete('/user/alice/stream/123')
+        .end((err, res) => {
+          res.should.have.status(204);
+          done();
         });
     });
   });

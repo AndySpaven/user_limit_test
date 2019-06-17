@@ -10,4 +10,5 @@ export const rootRoute = (req, res) => {
 /* GET home page. */
 router.get('/', rootRoute);
 router.get('/user/:name/stream/:id', streamRoute);
+router.delete('/user/:name/stream/:id', streamRoute);
 export default router;
