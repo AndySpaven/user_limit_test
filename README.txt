@@ -1,10 +1,10 @@
 User Limit
-----------
+==========
 A small NodeJS express app to (hopefully) satisfy tech test requirements.
 
 
 Design Notes
-------------
+============
 1. The streaming could be via a websocket in which case we could roll both connection and "can we stream" into one call to open the socket rather than this simplified API
 2. User authentication and authorisation isn't included.  Oauth/OpenID Connect would probably be used in reality.
 3. User is provided as a part of the URL path params rather more likely as a header containing a JWT from (2) above.
@@ -19,8 +19,9 @@ Design Notes
 7. Should not normally use user name as a key in a database - we'd have a user id from the authentication/authorisation module with which to uniquely identify the user.
 8. The calls to user streaming endpoints would validate the user and the stream ids before proceeding and return failure otherwise.
 9. There is no DI being used (regarding db and service use).
-10. There is no mocking in the tests.  Whilst okay for the route tests this is not ideal for the service test for example.
-
+10. There is no mocking in the tests.  Whilst maybe okay for the route tests this is not ideal for the service test for example.
+11. The stop streaming route suffered a bug due it being agnostic to whether a stream for the name and id even existed.  This should change.
+12. No demonstration of promises or promise chaining or of await inside async methods.  DB interaction is typically async.
 
 Running the App
 ===============
@@ -56,7 +57,7 @@ visit localhost:3000 in a browser to see the home page to know the server is run
 
 
 Side-Notes
-----------
+==========
 Uplift Express Generator code to ES6 thanks to: -
 
 https://www.freecodecamp.org/news/how-to-enable-es6-and-beyond-syntax-with-node-and-express-68d3e11fe1ab/
