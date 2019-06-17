@@ -2,9 +2,9 @@
 import chai from 'chai';
 import { beforeEach, describe, it } from 'mocha';
 import {
-  canOpenMoreStreams, startStreaming, stopStreaming,
-  // startStreaming,
-  // stopStreaming,
+  canOpenMoreStreams,
+  startStreaming,
+  stopStreaming,
 } from '../../src/lib/user.stream.service';
 import { purge } from '../../src/lib/user.stream.store';
 
