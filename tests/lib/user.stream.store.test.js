@@ -1,30 +1,26 @@
 /* eslint no-unused-expressions: 0 */
 import chai from 'chai';
 import { beforeEach, describe, it } from 'mocha';
-import {
-  purge,
-  findUser,
-  addStreamToUser,
-  removeStreamFromUser,
-} from '../../src/lib/user.stream.store';
+import DB from '../../src/lib/user.stream.store';
 
 const { expect } = chai;
 
 chai.should();
 
-const userShouldNotExist = name => expect(findUser(name)).to.be.null;
-const userShouldExist = name => expect(findUser(name)).not.to.be.null;
+let db;
+const userShouldNotExist = name => expect(db.findUser(name)).to.be.null;
+const userShouldExist = name => expect(db.findUser(name)).not.to.be.null;
 
 describe('User Stream Store', () => {
   beforeEach(() => {
-    purge();
+    db = DB();
   });
 
   describe('purge', () => {
     it('should reset the database', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'bob', id: '123' });
-      purge();
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'bob', id: '123' });
+      db.purge();
       userShouldNotExist('alice');
       userShouldNotExist('bob');
     });
@@ -38,47 +34,47 @@ describe('User Stream Store', () => {
 
   describe('addStreamToUser', () => {
     it('should create a user record if none exist and include the id', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      findUser('alice').should.eql(['123']);
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.findUser('alice').should.eql(['123']);
       userShouldNotExist('bob');
     });
     it('should add streams to an existing user record', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'alice', id: '234' });
-      findUser('alice').should.eql(['123', '234']);
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'alice', id: '234' });
+      db.findUser('alice').should.eql(['123', '234']);
     });
     it('should create a second item for a user record if the user adds a stream a second time', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'alice', id: '123' });
-      findUser('alice').should.eql(['123', '123']);
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.findUser('alice').should.eql(['123', '123']);
       userShouldNotExist('bob');
     });
   });
 
   describe('removeStreamFromUser', () => {
     it('should remove an id from the given user only', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'alice', id: '234' });
-      addStreamToUser({ name: 'alice', id: '345' });
-      addStreamToUser({ name: 'bob', id: '123' });
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'alice', id: '234' });
+      db.addStreamToUser({ name: 'alice', id: '345' });
+      db.addStreamToUser({ name: 'bob', id: '123' });
 
-      removeStreamFromUser({ name: 'alice', id: '123' });
+      db.removeStreamFromUser({ name: 'alice', id: '123' });
 
-      findUser('alice').should.eql(['234', '345']);
+      db.findUser('alice').should.eql(['234', '345']);
       userShouldExist('bob');
     });
 
-    it('should remove the user from the db if the id removed is the last one', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'bob', id: '123' });
-      removeStreamFromUser({ name: 'alice', id: '123' });
+    it('should remove the user from the DB if the id removed is the last one', () => {
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'bob', id: '123' });
+      db.removeStreamFromUser({ name: 'alice', id: '123' });
       userShouldNotExist('alice');
     });
     it('should remove only one item if that id is being streamed twice or more', () => {
-      addStreamToUser({ name: 'alice', id: '123' });
-      addStreamToUser({ name: 'alice', id: '123' });
-      removeStreamFromUser({ name: 'alice', id: '123' });
-      findUser('alice').should.eql(['123']);
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.addStreamToUser({ name: 'alice', id: '123' });
+      db.removeStreamFromUser({ name: 'alice', id: '123' });
+      db.findUser('alice').should.eql(['123']);
     });
   });
 });

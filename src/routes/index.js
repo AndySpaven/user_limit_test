@@ -1,14 +1,18 @@
 import express from 'express';
-import streamRoute from './stream';
 
-const router = express.Router();
+export default ({ route }) => {
+  const root = (req, res) => {
+    res.render('index', { title: 'Express' });
+  };
 
-export const rootRoute = (req, res) => {
-  res.render('index', { title: 'Express' });
+  return {
+    router() {
+      const router = express.Router();
+      router.get('/', root);
+      router.get('/user/:name/stream/:id', route);
+      router.delete('/user/:name/stream/:id', route);
+
+      return router;
+    },
+  };
 };
-
-/* GET home page. */
-router.get('/', rootRoute);
-router.get('/user/:name/stream/:id', streamRoute);
-router.delete('/user/:name/stream/:id', streamRoute);
-export default router;
